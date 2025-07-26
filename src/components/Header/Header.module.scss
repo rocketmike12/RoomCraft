@@ -1,0 +1,67 @@
+@import "../../sass/utils/variables.scss";
+.header {
+  padding: 20px 0;
+  background-color: $secondaryBgColor;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  &__wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  &__logo {
+    font-size: 24px;
+    color: $mainTextColor;
+    width: 275px;
+    line-height: 24px;
+    display: flex;
+    flex-direction: column;
+    span {
+      font-size: 11px;
+      line-height: 11px;
+    }
+  }
+  &__btn {
+    font-size: 10px;
+    color: $mainAccentColor;
+    background-color: transparent;
+    border: 1px solid $mainAccentColor;
+    padding: 10px 20px;
+    transition: all $st-transition;
+  }
+  &__btn:hover {
+    background-color: $mainAccentColor;
+    border-radius: 4px;
+    color: $secondaryTextColor;
+  }
+}
+
+@media screen and (min-width: 480px) {
+  .header {
+    &__wrap {
+      justify-content: space-between;
+      align-items: center;
+      gap: 0;
+    }
+  }
+}
+@media screen and (min-width: 768px) {
+  .header {
+    &__btn {
+      font-size: 12px;
+    }
+  }
+}
+@media screen and (min-width: 1200px) {
+  .header {
+    padding: 30px 0;
+    &__logo {
+      font-size: 32px;
+      p {
+        font-size: 15px;
+      }
+    }
+    &__btn {
+      font-size: 16px;
+    }
+  }
+}
