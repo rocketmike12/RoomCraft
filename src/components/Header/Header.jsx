@@ -8,7 +8,7 @@ export const Header = () => {
         <Container>
           <div className={s.header__wrap}>
             <h2 className={s.header__logo}>
-              RoomCraft — <span>створи кімнату своєї мрії</span>
+              RoomCraft — <br /> <span>створи кімнату своєї мрії</span>
             </h2>
             <button className={s.header__btn}>Збережене</button>
           </div>
