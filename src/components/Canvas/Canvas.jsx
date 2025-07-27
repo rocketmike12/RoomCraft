@@ -1,4 +1,3 @@
-import { Container } from "../Container/Container.jsx";
 import { useEffect, useRef } from "react";
 
 export const Room = function () {
