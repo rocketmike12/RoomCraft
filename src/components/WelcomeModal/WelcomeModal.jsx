@@ -17,8 +17,25 @@ const modalSteps = [
   {
     title:
       "RoomCraft створили молоді дизайнери та розробники, щоб зробити інтер'єрне планування веселим і доступним.",
-    text: "Познайомишсь з ними ближче?",
-    img: [mishaFirst, mishaSecond, yul],
+    text: "Познайомишся з ними ближче?",
+    description: "При натисканні на фото відкриється профіль GitHub",
+    develops: [
+      {
+        nickname: "Miha77777ua",
+        src: mishaFirst,
+        gitHub: "https://github.com/Miha77777ua",
+      },
+      {
+        nickname: "rocketmike12",
+        src: mishaSecond,
+        gitHub: "https://github.com/rocketmike12",
+      },
+      {
+        nickname: "Yul1aPedchenko",
+        src: yul,
+        gitHub: "https://github.com/Yul1aPedchenko",
+      },
+    ],
   },
   {
     title: "Що ж, не будемо тебе затримувати, гарної подорожі у кімнату мрії!",
@@ -46,7 +63,7 @@ export const WelcomeModal = ({ onClose }) => {
     }
   };
 
-  const { title, text, img } = modalSteps[step];
+  const { title, text, description, develops } = modalSteps[step];
 
   return (
     <div className={s.modal__backdrop} onClick={handleBackdropClick}>
@@ -54,14 +71,24 @@ export const WelcomeModal = ({ onClose }) => {
         <h2 className={s.modal__title}>{title}</h2>
         <p className={s.modal__text}>{text}</p>
 
-        {img && img.length > 0 && (
+        {develops && develops.length > 0 && (
           <div className={s.modal__wrapper}>
-            {img.map((src) => {
-              return <img src={src} alt={src} />;
+            {develops.map((develop) => {
+              return <a className={s.modal__link} href={develop.gitHub} target="blank_">
+                <div className={s['modal__wrap--develop']}>
+                  <img className={s.modal__img} src={develop.src} alt={develop.nickname} />
+                  <p className={s.modal__nickname}>{develop.nickname}</p>
+                </div>
+              </a>;
             })}
           </div>
+        )}
+        {description && (
+          <p className={s.modal__description}>{description}</p>
         )}
       </div>
     </div>
   );
 };
+
+localStorage.clear();
