@@ -12,6 +12,7 @@ export const MainPage = () => {
       setShowModal(true);
     }
   }, []);
+
   return (
     <>
       {showModal && <WelcomeModal onClose={() => setShowModal(false)} />}
