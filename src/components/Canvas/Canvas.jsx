@@ -2,16 +2,16 @@ import { useEffect, useRef } from "react";
 import styles from "./Canvas.module.scss";
 
 const options = {
-	widthPx: 600,
-	heightPx: 600,
 	widthCells: 6,
 	heightCells: 6,
-	cellSizePx: 100
+	cellSizePx: 100,
+	widthPx: 600,
+	heightPx: 600
 };
 
 const objects = [
-	{ id: 0, xCells: 0, yCells: 0, widthCells: 1, heightCells: 1 },
-	{ id: 1, xCells: 3, yCells: 4, widthCells: 2, heightCells: 1 }
+	{ xCells: 0, yCells: 0, widthCells: 1, heightCells: 1 },
+	{ xCells: 3, yCells: 4, widthCells: 2, heightCells: 1 }
 ];
 
 export const Canvas = function () {
@@ -24,17 +24,17 @@ export const Canvas = function () {
 		ctx.setLineDash([options.cellSizePx / 4, options.cellSizePx / 4]);
 		ctx.lineDashOffset = options.cellSizePx / 8;
 
-		for (let i = 0; i < options.widthPx / options.widthCells; i++) {
+		for (let i = 0; i <= options.widthCells; i++) {
 			ctx.beginPath();
 			ctx.moveTo(i * options.cellSizePx, 0);
-			ctx.lineTo(i * options.cellSizePx, options.widthPx);
+			ctx.lineTo(i * options.cellSizePx, options.heightPx);
 			ctx.stroke();
 		}
 
-		for (let i = 0; i < options.heightPx / options.heightCells; i++) {
+		for (let i = 0; i <= options.heightCells; i++) {
 			ctx.beginPath();
 			ctx.moveTo(0, i * options.cellSizePx);
-			ctx.lineTo(options.heightPx, i * options.cellSizePx);
+			ctx.lineTo(options.widthPx, i * options.cellSizePx);
 			ctx.stroke();
 		}
 	};
@@ -48,7 +48,7 @@ export const Canvas = function () {
 
 			ctx.beginPath();
 			ctx.rect(obj.xPx, obj.yPx, obj.widthPx, obj.heightPx);
-			ctx.fillStyle = id === selectedId ? "#8800aa" : "#000000";
+			ctx.fillStyle = id === selectedId ? "#9B5ED1" : "#000000";
 			ctx.fill();
 		});
 	};
@@ -78,25 +78,42 @@ export const Canvas = function () {
 
 		switch (e.key) {
 			case "ArrowLeft":
+				if (objects[selectedId].xCells - 1 < 0) return;
+
 				objects[selectedId].xCells -= 1;
 				break;
 			case "ArrowRight":
+				if (objects[selectedId].xCells + objects[selectedId].widthCells + 1 > options.widthCells) return;
+
 				objects[selectedId].xCells += 1;
 				break;
 			case "ArrowUp":
+				if (objects[selectedId].yCells - 1 < 0) return;
+
 				objects[selectedId].yCells -= 1;
 				break;
 			case "ArrowDown":
+				if (objects[selectedId].yCells + objects[selectedId].heightCells + 1 > options.heightCells) return;
+
 				objects[selectedId].yCells += 1;
 				break;
 			case "z":
 				[objects[selectedId].widthCells, objects[selectedId].heightCells] = [objects[selectedId].heightCells, objects[selectedId].widthCells];
+
+				if (objects[selectedId].yCells + objects[selectedId].heightCells - 1 === options.heightCells) {
+					objects[selectedId].yCells -= 1;
+				}
+
+				if (objects[selectedId].xCells + objects[selectedId].widthCells - 1 === options.widthCells) {
+					objects[selectedId].xCells -= 1;
+				}
+
 				break;
 			case "x":
 				objects.splice(selectedId, 1);
 				break;
 		}
-		
+
 		const canvas = canvasRef.current;
 		if (!canvas) return;
 
@@ -125,5 +142,5 @@ export const Canvas = function () {
 		window.addEventListener("keydown", handleKeyDown);
 	}, []);
 
-	return <canvas ref={canvasRef} width={600} height={600} className={styles.canvas} />;
+	return <canvas ref={canvasRef} width={options.widthPx} height={options.heightPx} className={styles.canvas} />;
 };
