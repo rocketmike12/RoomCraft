@@ -91,4 +91,3 @@ export const WelcomeModal = ({ onClose }) => {
   );
 };
 
-localStorage.clear();
