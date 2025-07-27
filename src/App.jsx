@@ -1,12 +1,12 @@
-import './sass/base/Base.scss';
+import "./sass/base/Base.scss";
 import { MainPage } from "./pages/MainPage/MainPage.jsx";
 
 function App() {
-  return (
-    <>
-      <MainPage />
-    </>
-  );
+	return (
+		<>
+			<MainPage />
+		</>
+	);
 }
 
 export default App;
