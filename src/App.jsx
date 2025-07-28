@@ -1,5 +1,5 @@
-import './sass/Base/Base.module.scss';
-import { MainPage } from "./MainPage/MainPage";
+import './sass/base/base.scss';
+import { MainPage } from "./pages/MainPage/MainPage";
 
 function App() {
   return (

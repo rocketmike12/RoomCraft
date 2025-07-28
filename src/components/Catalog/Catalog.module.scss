@@ -1,0 +1,62 @@
+@import "../../sass/utils/variables.scss";
+
+.catalog {
+  padding: 10px 25px 10px 5px;
+  background-color: $secondaryBgColor;
+
+  &__search {
+    display: flex;
+    padding: 12px 10px 10px 10px;
+    width: 100%;
+    border: 1px solid $borderColor;
+    margin-bottom: 20px;
+  }
+
+  &__categories {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding-bottom: 7px;
+    border-bottom: 2px solid $secondaryAccentColor;
+    margin-bottom: 20px;
+  }
+}
+
+.search {
+  &__input {
+    border: none;
+    outline: none;
+    font-size: inherit;
+    font-family: inherit;
+    color: $mainTextColor;
+  }
+}
+
+.categories {
+  &__btn {
+    padding: 12px 10px 10px 10px;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    text-align: start;
+    color: $mainTextColor;
+  }
+
+  &__category {
+    border-radius: 4px;
+    transition: background-color $st-transition;
+
+    &:hover {
+      background-color: $mainBgColor;
+    }
+
+    &.active {
+      background-color: $secondaryAccentColor;
+
+      & > button {
+        color: $secondaryTextColor;
+      }
+    }
+  }
+}
+

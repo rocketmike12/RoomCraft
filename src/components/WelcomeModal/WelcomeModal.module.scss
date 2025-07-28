@@ -1,0 +1,98 @@
+@import "../../sass/utils/variables.scss";
+.modal {
+  &__backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    padding: 20px;
+  }
+  &__wrap {
+    max-width: 700px;
+    width: 100%;
+  }
+  &__title {
+    font-size: 14px;
+    margin-bottom: 20px;
+    pointer-events: none;
+  }
+  &__text,
+  &__description {
+    font-size: 8px;
+    margin-bottom: 12px;
+    pointer-events: none;
+    color: $placeholderColor;
+  }
+  &__nickname {
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    font-size: 8px;
+    background-color: rgb(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    color: $secondaryTextColor;
+    border-radius: 8px;
+    transition: all $st-transition;
+  }
+  &__wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  &__wrap--develop {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &__wrap--develop:hover .modal__nickname {
+    opacity: 1;
+    visibility: visible;
+  }
+  &__img {
+    width: 170px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 8px $mainAccentColor;
+    animation: glowPulse 3s ease-in-out infinite alternate;
+    transition: all $st-transition;
+  }
+  &__description {
+    margin-top: 20px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .modal {
+    &__title {
+      font-size: 20px;
+    }
+    &__text {
+      font-size: 10px;
+    }
+    &__nickname {
+      width: 170px;
+      font-size: 12px;
+    }
+  }
+}
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 8px $mainAccentColor;
+  }
+  50% {
+    box-shadow: 0 0 16px $secondaryAccentColor;
+  }
+  100% {
+    box-shadow: 0 0 8px $modalBorderColor;
+  }
+}

@@ -10,7 +10,7 @@ export const Header = () => {
             <h2 className={s.header__logo}>
               RoomCraft — <span>створи кімнату своєї мрії</span>
             </h2>
-            <button className={s.header__btn}>Збережене</button>
+            {/* <button className={s.header__btn}>Збережене</button> */}
           </div>
         </Container>
       </header>
