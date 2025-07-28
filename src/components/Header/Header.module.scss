@@ -36,21 +36,8 @@
     color: $secondaryTextColor;
   }
 }
-
-// @media screen and (min-width: 480px) {
-//   .header {
-//     &__wrap {
-//       justify-content: space-between;
-//       align-items: center;
-//       gap: 0;
-//     }
-//   }
-// }
 @media screen and (min-width: 768px) {
   .header {
-    // &__btn {
-    //   font-size: 12px;
-    // }
     &__wrap {
       justify-content: center;
     }
