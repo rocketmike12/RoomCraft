@@ -11,13 +11,54 @@ const options = {
 
 const objects = [
 	{ xCells: 0, yCells: 0, widthCells: 1, heightCells: 1 },
-	{ xCells: 3, yCells: 4, widthCells: 2, heightCells: 1 }
+	{ xCells: 3, yCells: 4, widthCells: 2, heightCells: 1 },
+	{ xCells: 4, yCells: 0, widthCells: 2, heightCells: 2 }
 ];
 
 export const Canvas = function () {
 	const canvasRef = useRef(null);
 
-	let selectedId = 0;
+	let selectedId;
+
+	const findIntersections = function () {
+		let cells = [];
+
+		objects.forEach((obj, id) => {
+			cells[id] = [[obj.xCells, obj.yCells]];
+
+			if (obj.widthCells > 1 && obj.heightCells > 1) {
+				cells[id].push([obj.xCells + 1, obj.yCells]);
+				cells[id].push([obj.xCells, obj.yCells + 1]);
+				cells[id].push([obj.xCells + 1, obj.yCells + 1]);
+			} else if (obj.widthCells > 1) {
+				cells[id].push([obj.xCells + 1, obj.yCells]);
+			} else if (obj.heightCells > 1) {
+				cells[id].push([obj.xCells, obj.yCells + 1]);
+			}
+		});
+
+		const objSets = cells.map((obj) => {
+			return new Set(obj.map((coord) => coord.join(",")));
+		});
+
+		const intersections = new Set();
+
+		for (let i = 0; i < objSets.length; i++) {
+			for (let j = i + 1; j < objSets.length; j++) {
+				const setA = objSets[i];
+				const setB = objSets[j];
+
+				const isIntersecting = [...setA].some((x) => setB.has(x));
+
+				if (isIntersecting) {
+					intersections.add(i);
+					intersections.add(j);
+				}
+			}
+		}
+
+		return [...intersections];
+	};
 
 	const renderGrid = function (ctx) {
 		ctx.strokeStyle = "#1F2937";
@@ -40,7 +81,7 @@ export const Canvas = function () {
 	};
 
 	const renderObjects = function (ctx) {
-		objects.forEach((obj, id) => {
+		objects.forEach((obj) => {
 			obj.xPx = obj.xCells * options.cellSizePx;
 			obj.yPx = obj.yCells * options.cellSizePx;
 			obj.widthPx = obj.widthCells * options.cellSizePx;
@@ -48,9 +89,25 @@ export const Canvas = function () {
 
 			ctx.beginPath();
 			ctx.rect(obj.xPx, obj.yPx, obj.widthPx, obj.heightPx);
-			ctx.fillStyle = id === selectedId ? "#9B5ED1" : "#000000";
+			ctx.fillStyle = "#000000";
 			ctx.fill();
 		});
+
+		console.log(findIntersections());
+
+		if (selectedId == undefined) return;
+
+		let selectedObj = objects[selectedId];
+
+		selectedObj.xPx = selectedObj.xCells * options.cellSizePx;
+		selectedObj.yPx = selectedObj.yCells * options.cellSizePx;
+		selectedObj.widthPx = selectedObj.widthCells * options.cellSizePx;
+		selectedObj.heightPx = selectedObj.heightCells * options.cellSizePx;
+
+		ctx.beginPath();
+		ctx.rect(selectedObj.xPx, selectedObj.yPx, selectedObj.widthPx, selectedObj.heightPx);
+		ctx.fillStyle = findIntersections().find((el) => el === selectedId) == undefined ? "#00aa00" : "#aa0000";
+		ctx.fill();
 	};
 
 	const handleClick = function (e) {
