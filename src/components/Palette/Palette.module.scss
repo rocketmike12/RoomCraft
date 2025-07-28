@@ -1,0 +1,52 @@
+@import "../../sass/utils/variables.scss";
+
+.palette {
+  &__wrap {
+    position: relative;
+    display: inline-block;
+  }
+  &__btn {
+    width: 30px;
+    height: 30px;
+    background-color: $secondaryBgColor;
+    border: 1px solid $borderColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all $st-transition;
+    border-radius: 4px;
+  }
+  &__btn:hover {
+    border: 1px solid $mainAccentColor;
+  }
+  &__subwrap {
+    position: absolute;
+    padding: 15px;
+    background-color: $secondaryBgColor;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    width: 254px;
+    border: 1px solid $borderColor;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    right: 0;
+  }
+  &__btns {
+    width: 24px;
+    height: 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all $st-transition;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .palette {
+    &__btn {
+      width: 40px;
+      height: 40px;
+    }
+  }
+}

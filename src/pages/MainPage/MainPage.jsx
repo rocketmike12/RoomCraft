@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { WelcomeModal } from "../../components/WelcomeModal/WelcomeModal";
 import { Header } from "../../components/Header/Header";
 import { Catalog } from "../../components/Catalog/Catalog";
+// import { Palette } from "../../components/Palette/Palette";
 import style from "./MainPage.module.scss";
 
 export const MainPage = () => {
@@ -13,12 +14,14 @@ export const MainPage = () => {
     }
   }, []);
 
+  const [selectedColor, setSelectedColor] = useState(null);
   return (
     <>
       {showModal && <WelcomeModal onClose={() => setShowModal(false)} />}
       <Header />
       <main className={style.main}>
         <Catalog />
+        {/* <Palette selectedColor={selectedColor} setSelectedColor={setSelectedColor} /> */}
       </main>
     </>
   );
