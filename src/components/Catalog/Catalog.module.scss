@@ -3,13 +3,14 @@
 .catalog {
   padding: 15px;
   background-color: $secondaryBgColor;
+  width: 300px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
-  &__search {
-    display: flex;
-    padding: 12px 10px 10px 10px;
-    width: 100%;
-    border: 1px solid $borderColor;
-    margin-bottom: 20px;
+  &__title {
+    font-size: 25px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    text-align: center;
   }
 
   &__categories {
@@ -26,16 +27,6 @@
     gap: 26px;
     align-items: center;
     flex-wrap: wrap;
-  }
-}
-
-.search {
-  &__input {
-    border: none;
-    outline: none;
-    font-size: inherit;
-    font-family: inherit;
-    color: $mainTextColor;
   }
 }
 
@@ -65,11 +56,5 @@
       }
     }
   }
-}
-
-.furniture {
-  // &__img {
-  //   transform: scale(2);
-  // }
 }
 
