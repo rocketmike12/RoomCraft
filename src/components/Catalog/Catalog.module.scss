@@ -2,6 +2,7 @@
 
 .catalog {
   padding: 10px 25px 10px 5px;
+  width: 300px;
   background-color: $secondaryBgColor;
 
   &__search {
@@ -19,6 +20,13 @@
     padding-bottom: 7px;
     border-bottom: 2px solid $secondaryAccentColor;
     margin-bottom: 20px;
+  }
+
+  &__furniture {
+    display: flex;
+    gap: 26px;
+    align-items: center;
+    flex-wrap: wrap;
   }
 }
 
@@ -58,5 +66,11 @@
       }
     }
   }
+}
+
+.furniture {
+  // &__img {
+  //   transform: scale(2);
+  // }
 }
 

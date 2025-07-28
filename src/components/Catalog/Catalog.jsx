@@ -33,7 +33,11 @@ export const Catalog = () => {
         </li>
       </ul>
       <ul className={style.catalog__furniture}>
-        {/* Лішки */}
+        {data.map((el, id) => (
+          <li className={style.furniture__item} key={id}>
+            <img src={el.src[0].name} alt={el.name} className={style.furniture__img} />
+          </li>
+        ))}
       </ul>
     </div>
   )

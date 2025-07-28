@@ -1,55 +1,55 @@
-import BookShelfOneFirst from "../img/furniture/bookshelf1-1.png";
+import BookShelfOneFirst from "../img/furniture/bookshelf1-1_2x.png";
 import BookShelfOneSecond from "../img/furniture/bookshelf1-2.png";
 
 
-import ChairOneFirst from "../img/furniture/chair1-1.png";
+import ChairOneFirst from "../img/furniture/chair1-1_2x.png";
 import ChairOneSecond from "../img/furniture/chair1-2.png";
 import ChairOneThird from "../img/furniture/chair1-3.png";
 
-import ChairTwoFirst from "../img/furniture/chair2-1.png";
+import ChairTwoFirst from "../img/furniture/chair2-1_2x.png";
 import ChairTwoSecond from "../img/furniture/chair2-2.png";
 import ChairTwoThird from "../img/furniture/chair2-3.png";
 
-import ChairThreeFirst from "../img/furniture/chair3-1.png";
+import ChairThreeFirst from "../img/furniture/chair3-1_2x.png";
 import ChairThreeSecond from "../img/furniture/chair3-2.png";
 import ChairThreeThird from "../img/furniture/chair3-3.png";
 
-import ChairFourFirst from "../img/furniture/chair4-1.png";
+import ChairFourFirst from "../img/furniture/chair4-1_2x.png";
 import ChairFourSecond from "../img/furniture/chair4-2.png";
 import ChairFourThird from "../img/furniture/chair4-3.png";
 
 
-import CouchOneFirst from "../img/furniture/couch1-1.png";
+import CouchOneFirst from "../img/furniture/couch1-1_2x.png";
 import CouchOneSecond from "../img/furniture/couch1-2.png";
 import CouchOneThird from "../img/furniture/couch1-3.png";
 
-import CouchTwoFirst from "../img/furniture/couch2-1.png";
+import CouchTwoFirst from "../img/furniture/couch2-1_2x.png";
 import CouchTwoSecond from "../img/furniture/couch2-2.png";
 import CouchTwoThird from "../img/furniture/couch2-3.png";
 
 
-import NightStandOneFirst from "../img/furniture/nightstand1-1.png";
+import NightStandOneFirst from "../img/furniture/nightstand1-1_2x.png";
 import NightStandOneSecond from "../img/furniture/nightstand1-2.png";
 
-import NightStandTwoFirst from "../img/furniture/nightstand2-1.png";
+import NightStandTwoFirst from "../img/furniture/nightstand2-1_2x.png";
 import NightStandTwoSecond from "../img/furniture/nightstand2-2.png";
 
-import NightStandThreeFirst from "../img/furniture/nightstand3-1.png";
+import NightStandThreeFirst from "../img/furniture/nightstand3-1_2x.png";
 import NightStandThreeSecond from "../img/furniture/nightstand3-2.png";
 
-import NightStandFourFirst from "../img/furniture/nightstand4-1.png";
+import NightStandFourFirst from "../img/furniture/nightstand4-1_2x.png";
 import NightStandFourSecond from "../img/furniture/nightstand4-2.png";
 
 
-import StoolOne from "../img/furniture/stool1.png";
+import StoolOne from "../img/furniture/stool1_2x.png";
 
-import StoolTwo from "../img/furniture/stool2.png";
+import StoolTwo from "../img/furniture/stool2_2x.png";
 
 
-import TableOneFirst from "../img/furniture/table1-1.png";
+import TableOneFirst from "../img/furniture/table1-1_2x.png";
 import TableOneSecond from "../img/furniture/table1-2.png";
 
-import TableTwoFirst from "../img/furniture/table2-1.png";
+import TableTwoFirst from "../img/furniture/table2-1_2x.png";
 import TableTwoSecond from "../img/furniture/table2-2.png";
 
 export default [
