@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import s from "./Palette.module.scss";
 import palette from "../../img/icons/colors.svg";
 
@@ -12,9 +12,28 @@ const colors = [
 
 export const Palette = ({ selectedColor, setSelectedColor }) => {
   const [showPalette, setShowPalette] = useState(false);
+  const paletteRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (paletteRef.current && !paletteRef.current.contains(e.target)) {
+        setShowPalette(false);
+      }
+    };
+
+    if (showPalette) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showPalette]);
 
   return (
-    <div className={s.palette__wrap}>
+    <div className={s.palette__wrap} ref={paletteRef}>
       <button
         onClick={() => setShowPalette(!showPalette)}
         className={s.palette__btn}
@@ -25,7 +44,8 @@ export const Palette = ({ selectedColor, setSelectedColor }) => {
       {showPalette && (
         <div className={s.palette__subwrap}>
           {colors.map((color) => (
-            <button className={s.palette__btns}
+            <button
+              className={s.palette__btns}
               key={color}
               onClick={() => {
                 setSelectedColor(color);
@@ -33,8 +53,7 @@ export const Palette = ({ selectedColor, setSelectedColor }) => {
               }}
               style={{
                 backgroundColor: color,
-                border: selectedColor === color ? `2px solid ${color}` : "2px solid white"
-
+                border: selectedColor === color ? `2px solid ${color}` : "2px solid white",
               }}
               title={color}
             />
