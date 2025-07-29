@@ -1,0 +1,78 @@
+@import "../../sass/utils/variables.scss";
+.que {
+  &__wrap {
+    position: relative;
+  }
+  &__btn {
+    font-size: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: $secondaryBgColor;
+    border: 1px solid $borderColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all $st-transition;
+    border-radius: 4px;
+  }
+  &__btn:hover {
+    border: 1px solid $mainAccentColor;
+  }
+  &__popup {
+    background-color: $secondaryBgColor;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border: 1px solid $borderColor;
+    height: fit-content;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    position: absolute;
+    right: 0;
+    width: 270px;
+    span {
+      font-size: 20px;
+    }
+  }
+  &__title {
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: $mainTextColor;
+  }
+  &__description {
+    font-size: 8px;
+    color: $mainTextColor;
+    span {
+      font-size: 10px;
+      color: $warningColor;
+    }
+  }
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  &__item {
+    font-size: 12px;
+    color: $mainTextColor;
+  }
+  &__top {
+    display: inline-block;
+    transform: rotate(-90deg);
+  }
+  &__bottom {
+    display: inline-block;
+    transform: rotate(90deg);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .que {
+    &__btn {
+      font-size: 12px;
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
