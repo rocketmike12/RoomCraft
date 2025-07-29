@@ -34,7 +34,7 @@ const objects = [
 	new Furniture(1, 1, furniture[14].src),
 	new Furniture(7, 1, furniture[4].src),
 	new Furniture(5, 5, furniture[5].src),
-	new Furniture(3, 2, furniture[1].src),
+	new Furniture(4, 3, furniture[1].src),
 	new Furniture(4, 5, furniture[3].src)
 ];
 
