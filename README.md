@@ -1,4 +1,4 @@
-# room-builder
+# RoomCraft
 Побудуй кімнату своєї мрії!
 
 ## Tech stack
