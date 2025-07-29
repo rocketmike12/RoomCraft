@@ -1,5 +1,7 @@
 # RoomCraft
+
 Побудуй кімнату своєї мрії!
+![preview](./preview.png)
 
 ## Tech stack
 
