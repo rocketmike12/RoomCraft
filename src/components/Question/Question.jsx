@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import s from "./Question.module.scss";
 
 export const Question = () => {
