@@ -411,7 +411,7 @@ export const Canvas = function ({ canvasRef }) {
 					</div>
 				</div>
 
-				<canvas style={{ backgroundColor: selectedColor }} ref={canvasRef} className={styles.canvas} />
+				<canvas style={{ backgroundColor: selectedColor }} ref={canvasRef} className={styles["canvas"]} />
 
 				<ul className={styles["button-list"]}>
 					<li className={styles["button-list__item"]}>
