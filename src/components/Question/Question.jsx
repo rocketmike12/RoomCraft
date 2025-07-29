@@ -20,7 +20,7 @@ export const Question = () => {
             <ul className={s.que__list}>
               <li className={s.que__item}>
                 <span className={s.que__top}>›</span> - 
-                вверх
+                вгору
               </li>
               <li className={s.que__item}>
                 <span className={s.que__bottom}>›</span> - 
