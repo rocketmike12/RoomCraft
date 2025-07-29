@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-// import { addObject } from "../Canvas/Canvas.jsx";
 import style from "./Catalog.module.scss";
 
 import data from "../../data/images.js";
+import categories from "../../data/categories.js";
 
 export const Catalog = ({ onAdd }) => {
   const [activeCategory, setActiveCategory] = useState("Всі");
@@ -25,44 +25,21 @@ export const Catalog = ({ onAdd }) => {
 
   return (
     <div className={style.catalog} ref={catalogRef}>
-      <h2 className={style.catalog__title}>Каталог</h2>
-      <ul className={style.catalog__categories}>
-        <li className={`${style.categories__category}${activeCategory === "Всі" ? ` ${style.active}` : ""}`}>
-          <button className={style.categories__btn} onClick={() => setActiveCategory("Всі")}>
-            Всі
-          </button>
-        </li>
-        <li className={`${style.categories__category}${activeCategory === "Стільці" ? ` ${style.active}` : ""}`}>
-          <button className={style.categories__btn} onClick={() => setActiveCategory("Стільці")}>
-            Стільці
-          </button>
-        </li>
-        <li className={`${style.categories__category}${activeCategory === "Столи" ? ` ${style.active}` : ""}`}>
-          <button className={style.categories__btn} onClick={() => setActiveCategory("Столи")}>
-            Столи
-          </button>
-        </li>
-        <li className={`${style.categories__category}${activeCategory === "Шафи" ? ` ${style.active}` : ""}`}>
-          <button className={style.categories__btn} onClick={() => setActiveCategory("Шафи")}>
-            Шафи
-          </button>
-        </li>
-        <li className={`${style.categories__category}${activeCategory === "Тумбочки" ? ` ${style.active}` : ""}`}>
-          <button className={style.categories__btn} onClick={() => setActiveCategory("Тумбочки")}>
-            Тумбочки
-          </button>
-        </li>
-        <li className={`${style.categories__category}${activeCategory === "Дивани" ? ` ${style.active}` : ""}`}>
-          <button className={style.categories__btn} onClick={() => setActiveCategory("Дивани")}>
-            Дивани
-          </button>
-        </li>
-        <li className={`${style.categories__category}${activeCategory === "Ослінчики" ? ` ${style.active}` : ""}`}>
-          <button className={style.categories__btn} onClick={() => setActiveCategory("Ослінчики")}>
-            Ослінчики
-          </button>
-        </li>
-      </ul>
+      <div className={style.catalog__block}>
+        <h2 className={style.catalog__title}>Каталог</h2>
+        <ul className={style.catalog__categories}>
+          {categories.map((el, id) => (
+            <li
+              className={`${style.categories__category}${activeCategory === el ? ` ${style.active}` : ""}`}
+              key={id}
+            >
+              <button className={style.categories__btn} onClick={() => setActiveCategory(el)}>
+                {el}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
       <ul className={style.catalog__furniture}>
         {data
           .map((el, id) => ({ id: id, ...el }))
