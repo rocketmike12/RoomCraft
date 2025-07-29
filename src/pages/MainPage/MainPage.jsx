@@ -26,7 +26,7 @@ export const MainPage = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    renderCanvas(ctx, canvas);
+    renderCanvas(ctx, canvas, true);
   };
 
   useEffect(() => {
