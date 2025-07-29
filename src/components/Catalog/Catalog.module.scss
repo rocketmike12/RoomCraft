@@ -1,3 +1,60 @@
 @import "../../sass/utils/variables.scss";
 
+.catalog {
+  padding: 15px;
+  background-color: $secondaryBgColor;
+  width: 300px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+
+  &__title {
+    font-size: 25px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  &__categories {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding-bottom: 7px;
+    border-bottom: 2px solid $secondaryAccentColor;
+    margin-bottom: 20px;
+  }
+
+  &__furniture {
+    display: flex;
+    gap: 26px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+.categories {
+  &__btn {
+    padding: 12px 10px 10px 10px;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    text-align: start;
+    color: $mainTextColor;
+  }
+
+  &__category {
+    border-radius: 4px;
+    transition: background-color $st-transition;
+
+    &:hover {
+      background-color: $mainBgColor;
+    }
+
+    &.active {
+      background-color: $secondaryAccentColor;
+
+      & > button {
+        color: $secondaryTextColor;
+      }
+    }
+  }
+}
 

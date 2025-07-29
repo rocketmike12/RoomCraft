@@ -1,8 +1,11 @@
 @import "../../sass/utils/variables.scss";
 .header {
+  position: relative;
   padding: 20px 0;
   background-color: $secondaryBgColor;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  z-index: 10;
+
   &__wrap {
     display: flex;
     flex-wrap: wrap;
@@ -33,21 +36,8 @@
     color: $secondaryTextColor;
   }
 }
-
-// @media screen and (min-width: 480px) {
-//   .header {
-//     &__wrap {
-//       justify-content: space-between;
-//       align-items: center;
-//       gap: 0;
-//     }
-//   }
-// }
 @media screen and (min-width: 768px) {
   .header {
-    // &__btn {
-    //   font-size: 12px;
-    // }
     &__wrap {
       justify-content: center;
     }

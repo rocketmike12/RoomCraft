@@ -3,6 +3,7 @@ import { WelcomeModal } from "../../components/WelcomeModal/WelcomeModal";
 import { Header } from "../../components/Header/Header";
 import { Catalog } from "../../components/Catalog/Catalog";
 import { Canvas } from "../../components/Canvas/Canvas";
+// import { Palette } from "../../components/Palette/Palette";
 import style from "./MainPage.module.scss";
 
 export const MainPage = () => {
@@ -13,6 +14,8 @@ export const MainPage = () => {
 			setShowModal(true);
 		}
 	}, []);
+
+	const [selectedColor, setSelectedColor] = useState(null);
 	return (
 		<>
 			{showModal && <WelcomeModal onClose={() => setShowModal(false)} />}
@@ -20,6 +23,7 @@ export const MainPage = () => {
 			<main className={style.main}>
 				<Catalog />
 				<Canvas />
+				{/* <Palette selectedColor={selectedColor} setSelectedColor={setSelectedColor} /> */}
 			</main>
 		</>
 	);

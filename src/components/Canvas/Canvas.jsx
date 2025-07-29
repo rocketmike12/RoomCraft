@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react";
+// import furniture from "../../data/images_with_sprite.js";
+import image from "../../img/"
 import styles from "./Canvas.module.scss";
 
 const options = {
