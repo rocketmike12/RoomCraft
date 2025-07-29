@@ -1,0 +1,9 @@
+.menu {
+  position: fixed;
+  left: -500px;
+
+  @media screen and (min-width: 768px) {
+    position: relative;
+    left: 0;
+  }
+}
