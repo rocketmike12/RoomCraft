@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Search from "../../img/search.svg";
 import style from "./Catalog.module.scss";
 
 import data from "../../data/images.js";

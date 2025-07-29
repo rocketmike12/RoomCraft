@@ -7,24 +7,24 @@ import { Palette } from "../../components/Palette/Palette";
 import style from "./MainPage.module.scss";
 
 export const MainPage = () => {
-	const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-	useEffect(() => {
-		if (!localStorage.getItem("visitedRoomCraft")) {
-			setShowModal(true);
-		}
-	}, []);
+  useEffect(() => {
+    if (!localStorage.getItem("visitedRoomCraft")) {
+      setShowModal(true);
+    }
+  }, []);
 
-	const [selectedColor, setSelectedColor] = useState(null);
-	return (
-		<>
-			{showModal && <WelcomeModal onClose={() => setShowModal(false)} />}
-			<Header />
-			<main className={style.main}>
-				<Catalog />
-				<Canvas color={selectedColor}/>
-				<Palette selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
-			</main>
-		</>
-	);
+  const [selectedColor, setSelectedColor] = useState(null);
+  return (
+    <>
+      {showModal && <WelcomeModal onClose={() => setShowModal(false)} />}
+      <Header />
+      <main className={style.main}>
+        <Catalog />
+        <Canvas color={selectedColor} />
+        {/* <Palette selectedColor={selectedColor} setSelectedColor={setSelectedColor} /> */}
+      </main>
+    </>
+  );
 };

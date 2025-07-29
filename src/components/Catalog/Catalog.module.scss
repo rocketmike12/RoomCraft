@@ -5,12 +5,30 @@
   background-color: $secondaryBgColor;
   width: 300px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  overflow: auto;
+  max-height: 100vh;
+
+  @media screen and (min-width: 768px) {
+    width: 200px;
+  }
+  
+  @media screen and (min-width: 1200px) {
+    width: 300px;
+  }
 
   &__title {
     font-size: 25px;
     margin-top: 10px;
     margin-bottom: 15px;
     text-align: center;
+
+    @media screen and (min-width: 768px) {
+      font-size: 16px;
+    }
+
+    @media screen and (min-width: 1200px) {
+      font-size: 25px;
+    }
   }
 
   &__categories {
@@ -38,6 +56,11 @@
     border: none;
     text-align: start;
     color: $mainTextColor;
+    font-size: 13px;
+
+    @media screen and (min-width: 768px) {
+      font-size: 12px;
+    }
   }
 
   &__category {
