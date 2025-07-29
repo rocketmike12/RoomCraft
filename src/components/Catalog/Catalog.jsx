@@ -65,9 +65,10 @@ export const Catalog = ({ onAdd }) => {
 			</ul>
 			<ul className={style.catalog__furniture}>
 				{data
+					.map((el, id) => ({ id: id, ...el }))
 					.filter((el) => (activeCategory === "Всі" ? true : el.category === activeCategory))
 					.map((el, id) => (
-						<li className={style.furniture__item} data-id={id} key={id}>
+						<li className={style.furniture__item} data-id={el.id} key={id}>
 							<img src={el.scaled} alt={el.name} className={style.furniture__img} />
 						</li>
 					))}
