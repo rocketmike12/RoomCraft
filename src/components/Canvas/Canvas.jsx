@@ -28,15 +28,21 @@ class Furniture {
 		this.widthCells = this.currentSprite.width;
 		this.heightCells = this.currentSprite.height;
 	}
+
+	static fromObj(obj) {
+		return new Furniture(obj.xCells, obj.yCells, obj.sprites);
+	}
 }
 
-const objects = [
-	new Furniture(1, 1, furniture[14].src),
-	new Furniture(7, 1, furniture[4].src),
-	new Furniture(5, 5, furniture[5].src),
-	new Furniture(4, 3, furniture[1].src),
-	new Furniture(4, 5, furniture[3].src)
-];
+// let objects = [
+// 	new Furniture(1, 1, furniture[14].src),
+// 	new Furniture(7, 1, furniture[4].src),
+// 	new Furniture(5, 5, furniture[5].src),
+// 	new Furniture(4, 3, furniture[1].src),
+// 	new Furniture(4, 5, furniture[3].src)
+// ];
+
+let objects = JSON.parse(localStorage.getItem("objects")).map(el => Furniture.fromObj(el)) || [];
 
 export const Canvas = function () {
 	const canvasRef = useRef(null);
@@ -231,6 +237,8 @@ export const Canvas = function () {
 		ctx.clearRect(0, 0, options.widthPx, options.heightPx);
 		renderGrid(ctx);
 		renderObjects(ctx);
+
+		localStorage.setItem("objects", JSON.stringify(objects));
 	};
 
 	useEffect(() => {
