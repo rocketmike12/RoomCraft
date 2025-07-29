@@ -73,8 +73,8 @@ export const WelcomeModal = ({ onClose }) => {
 
         {develops && develops.length > 0 && (
           <div className={s.modal__wrapper}>
-            {develops.map((develop) => {
-              return <a className={s.modal__link} href={develop.gitHub} target="blank_">
+            {develops.map((develop, id) => {
+              return <a className={s.modal__link} href={develop.gitHub} target="blank_" key={id}>
                 <div className={s['modal__wrap--develop']}>
                   <img className={s.modal__img} src={develop.src} alt={develop.nickname} />
                   <p className={s.modal__nickname}>{develop.nickname}</p>
