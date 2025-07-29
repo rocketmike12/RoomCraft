@@ -25,19 +25,21 @@ export const Catalog = ({ onAdd }) => {
 
   return (
     <div className={style.catalog} ref={catalogRef}>
-      <h2 className={style.catalog__title}>Каталог</h2>
-      <ul className={style.catalog__categories}>
-        {categories.map((el, id) => (
-          <li
-            className={`${style.categories__category}${activeCategory === el ? ` ${style.active}` : ""}`}
-            key={id}
-          >
-            <button className={style.categories__btn} onClick={() => setActiveCategory(el)}>
-              {el}
-            </button>
-          </li>
-        ))}
-      </ul>
+      <div className={style.catalog__block}>
+        <h2 className={style.catalog__title}>Каталог</h2>
+        <ul className={style.catalog__categories}>
+          {categories.map((el, id) => (
+            <li
+              className={`${style.categories__category}${activeCategory === el ? ` ${style.active}` : ""}`}
+              key={id}
+            >
+              <button className={style.categories__btn} onClick={() => setActiveCategory(el)}>
+                {el}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
       <ul className={style.catalog__furniture}>
         {data
           .map((el, id) => ({ id: id, ...el }))

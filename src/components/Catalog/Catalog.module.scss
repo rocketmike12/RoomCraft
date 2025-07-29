@@ -1,20 +1,31 @@
 @import "../../sass/utils/variables.scss";
 
 .catalog {
+  display: flex;
   padding: 15px;
   background-color: $secondaryBgColor;
-  width: 300px;
+  width: 100%;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   overflow: auto;
-  max-height: 100vh;
-  display: inline-block;
-
-  @media screen and (min-width: 768px) {
-    width: 200px;
-  }
+  flex-direction: row;
+  height: 400px;
   
   @media screen and (min-width: 1200px) {
     width: 300px;
+    flex-direction: column;
+    max-height: 100vh;
+    height: auto;
+  }
+
+  &__block {
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid $secondaryAccentColor;
+    padding-right: 15px;
+
+    @media screen and (min-width: 1200px) {
+      border-right: none;
+    }
   }
 
   &__title {
@@ -37,15 +48,26 @@
     flex-direction: column;
     gap: 7px;
     padding-bottom: 7px;
-    border-bottom: 2px solid $secondaryAccentColor;
     margin-bottom: 20px;
+
+    @media screen and (min-width: 1200px) {
+      border-bottom: 2px solid $secondaryAccentColor;
+    }
   }
 
   &__furniture {
     display: flex;
     gap: 26px;
-    align-items: center;
+    padding-left: 15px;
     flex-wrap: wrap;
+    // height: 272px;
+    max-width: 400px;
+    overflow-x: auto;
+
+    @media screen and (min-width: 1200px) {
+      height: auto;
+      overflow-x: visible;
+    }
   }
 }
 
