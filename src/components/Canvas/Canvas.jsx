@@ -2,7 +2,10 @@ import { useEffect, useRef } from "react";
 import furniture from "../../data/images_with_sprite.js";
 import styles from "./Canvas.module.scss";
 
-let options = JSON.parse(localStorage.getItem("options")) || {};
+let options = JSON.parse(localStorage.getItem("options")) || {
+	widthCells: 8,
+	heightCells: 8
+};
 
 export function renderCanvas(ctx, canvas, color) {
 	options.widthPx = canvas.getBoundingClientRect().width;
