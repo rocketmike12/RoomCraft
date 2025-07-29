@@ -1,7 +1,129 @@
-.canvas {
-    outline: 2px solid #1F2937;
-    outline-offset: -1px;
+@import "../../sass/base/base.scss";
 
-    width: 600px;
-    height: 600px;
+.canvas-wrap {
+	padding: 20px 15px;
+	display: inline-block;
+	max-height: 100vh;
+
+	@media screen and (min-width: 1200px) {
+		padding: 25px 10px;
+	}
+}
+
+.canvas {
+	outline: 2px solid #1f2937;
+	outline-offset: -1px;
+
+	width: 290px;
+	height: 290px;
+
+	@media screen and (min-width: 480px) {
+		width: 450px;
+		height: 450px;
+	}
+
+	@media screen and (min-width: 768px) {
+		width: 738px;
+		height: 738px;
+	}
+
+	@media screen and (min-width: 1200px) {
+		width: 860px;
+		height: 860px;
+	}
+}
+
+.button-list {
+	width: 100%;
+	padding: 57px 0;
+	display: flex;
+	gap: 10px;
+	justify-content: flex-end;
+
+	&__button {
+		padding: 10px 20px;
+		font-size: 10px;
+
+		@media screen and (min-width: 768px) {
+			font-size: 12px;
+		}
+
+		@media screen and (min-width: 1200px) {
+			padding: 13px 20px;
+		}
+
+		&-clear {
+			color: $mainAccentColor;
+			background-color: $secondaryBgColor;
+			border: 1px solid $mainAccentColor;
+		}
+
+		&-save {
+			color: $secondaryTextColor;
+			background-color: $mainAccentColor;
+			border: 1px solid $mainAccentColor;
+		}
+	}
+
+	@media screen and (min-width: 480px) {
+		gap: 7px;
+	}
+
+	@media screen and (min-width: 768px) {
+		gap: 6px;
+	}
+
+	@media screen and (min-width: 1200px) {
+		gap: 15px;
+	}
+}
+
+.size {
+	&__wrap {
+		padding: 10px 0;
+		display: flex;
+		justify-content: start;
+		align-items: center;
+	}
+
+	&__input {
+		width: 30px;
+		height: 30px;
+		color: $placeholderColor;
+		padding: 10px;
+		outline: none;
+		border: 1px solid $placeholderColor;
+
+		@media screen and (min-width: 768px) {
+			padding: 12px;
+			width: 40px;
+			height: 40px;
+		}
+
+		@media screen and (min-width: 1200px) {
+			padding: 13px;
+		}
+	}
+
+	&__button {
+		background-color: transparent;
+		outline: none;
+		box-shadow: none;
+		border: none;
+
+		font-size: 10px;
+
+		@media screen and (min-width: 768px) {
+			font-size: 12px;
+		}
+	}
+}
+
+@media screen and (min-width: 480px) {
+}
+
+@media screen and (min-width: 768px) {
+}
+
+@media screen and (min-width: 1200px) {
 }
