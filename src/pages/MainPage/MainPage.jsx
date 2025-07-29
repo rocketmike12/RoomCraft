@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { WelcomeModal } from "../../components/WelcomeModal/WelcomeModal";
 import { Header } from "../../components/Header/Header";
-import { Palette } from "../../components/Palette/Palette";
 import style from "./MainPage.module.scss";
 import {
   Canvas,
@@ -9,8 +8,6 @@ import {
   renderCanvas,
 } from "../../components/Canvas/Canvas.jsx";
 import { Catalog } from "../../components/Catalog/Catalog.jsx";
-import { Question } from "../../components/Question/Question.jsx";
-import { Container } from "../../components/Container/Container.jsx";
 
 export const MainPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -40,9 +37,11 @@ export const MainPage = () => {
     <>
       {showModal && <WelcomeModal onClose={() => setShowModal(false)} />}
       <Header />
-      <main className={style.main}>
-        <Catalog onAdd={handleAdd} />
-        <Canvas canvasRef={canvasRef} />
+      <main>
+        <div className={style.main__wrap}>
+          <Catalog onAdd={handleAdd} />
+          <Canvas color={selectedColor} canvasRef={canvasRef} />
+        </div>
       </main>
     </>
   );
