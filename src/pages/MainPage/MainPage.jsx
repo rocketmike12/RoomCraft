@@ -22,7 +22,7 @@ export const MainPage = () => {
 			<Header />
 			<main className={style.main}>
 				<Catalog />
-				<Canvas />
+				<Canvas color={selectedColor}/>
 				<Palette selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
 			</main>
 		</>

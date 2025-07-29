@@ -38,7 +38,7 @@ const objects = [
 	new Furniture(4, 5, furniture[3].src)
 ];
 
-export const Canvas = function () {
+export const Canvas = function ({color}) {
 	const canvasRef = useRef(null);
 
 	let selectedId = 0;
@@ -246,5 +246,5 @@ export const Canvas = function () {
 		window.addEventListener("keydown", handleKeyDown);
 	}, []);
 
-	return <canvas ref={canvasRef} width={options.widthPx} height={options.heightPx} className={styles.canvas} />;
+	return <canvas style={{backgroundColor: color}} ref={canvasRef} width={options.widthPx} height={options.heightPx} className={styles.canvas} />;
 };
