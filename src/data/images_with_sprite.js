@@ -64,21 +64,21 @@ export default [
 		src: [
 			{
 				name: BookShelfOneFirst,
-				sprite: { width: 0.8, height: 0.8, offsetX: 0.1, offsetY: 0.1 },
-				width: 1,
-				height: 1
+				sprite: { width: 1.6, height: 1.6, offsetX: 0.2, offsetY: 0.2 },
+				width: 2,
+				height: 2
 			},
 			{
 				name: BookShelfOneSecond,
-				sprite: { width: 0.267, height: 0.8, offsetX: 0.366 - 0.3, offsetY: 0.1 },
+				sprite: { width: 0.534, height: 1.6, offsetX: 0.132, offsetY: 0.2 },
 				width: 1,
-				height: 1
+				height: 2
 			},
 			{
 				name: BookShelfOneThird,
-				sprite: { width: 0.267, height: 0.8, offsetX: 0.366 + 0.3, offsetY: 0.1 },
+				sprite: { width: 0.534, height: 1.6, offsetX: 0.332, offsetY: 0.2 },
 				width: 1,
-				height: 1
+				height: 2
 			}
 		]
 	},

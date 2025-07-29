@@ -281,28 +281,6 @@ export default [
     category: "Тумбочки",
   },
   {
-    name: "Nightstand 3",
-    src: [
-      {
-        name: NightStandThreeFirst,
-        width: 1,
-        height: 1
-      },
-      {
-        name: NightStandThreeSecond,
-        width: 1,
-        height: 1
-      },
-      {
-        name: NightStandThreeThird,
-        width: 1,
-        height: 1
-      }
-    ],
-    scaled: NightStandThree2x,
-    category: "Тумбочки",
-  },
-  {
     name: "Nightstand 2",
     src: [
       {
@@ -322,6 +300,28 @@ export default [
       }
     ],
     scaled: NightStandTwo2x,
+    category: "Тумбочки",
+  },
+  {
+    name: "Nightstand 3",
+    src: [
+      {
+        name: NightStandThreeFirst,
+        width: 1,
+        height: 1
+      },
+      {
+        name: NightStandThreeSecond,
+        width: 1,
+        height: 1
+      },
+      {
+        name: NightStandThreeThird,
+        width: 1,
+        height: 1
+      }
+    ],
+    scaled: NightStandThree2x,
     category: "Тумбочки",
   },
   {

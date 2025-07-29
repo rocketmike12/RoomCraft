@@ -2,6 +2,18 @@ import { useEffect, useRef } from "react";
 import furniture from "../../data/images_with_sprite.js";
 import styles from "./Canvas.module.scss";
 
+export function renderCanvas(ctx) {
+	ctx.clearRect(0, 0, options.widthPx, options.heightPx);
+	renderGrid(ctx);
+	renderObjects(ctx);
+	localStorage.setItem("objects", JSON.stringify(objects));
+}
+
+export const addObject = function (id) {
+	objects.push(new Furniture(options.widthCells / 2, options.heightCells / 2, furniture[id].src));
+	selectedId = objects.length - 1;
+};
+
 const options = {
 	widthCells: 8,
 	heightCells: 8,
@@ -9,6 +21,8 @@ const options = {
 	widthPx: 600,
 	heightPx: 600
 };
+
+let selectedId = 0;
 
 class Furniture {
 	constructor(xCells, yCells, sprites) {
@@ -28,133 +42,136 @@ class Furniture {
 		this.widthCells = this.currentSprite.width;
 		this.heightCells = this.currentSprite.height;
 	}
+
+	static fromObj(obj) {
+		return new Furniture(obj.xCells, obj.yCells, obj.sprites);
+	}
 }
 
-const objects = [
-	new Furniture(1, 1, furniture[14].src),
-	new Furniture(7, 1, furniture[4].src),
-	new Furniture(5, 5, furniture[5].src),
-	new Furniture(4, 3, furniture[1].src),
-	new Furniture(4, 5, furniture[3].src)
-];
+let objects = (JSON.parse(localStorage.getItem("objects")) || []).map((el) => Furniture.fromObj(el));
 
-export const Canvas = function ({color}) {
-	const canvasRef = useRef(null);
+const render = (ctx) => {
+	localStorage.setItem("objects", JSON.stringify(objects));
 
-	let selectedId = 0;
+	ctx.clearRect(0, 0, options.widthPx, options.heightPx);
+	renderGrid(ctx);
+	renderObjects(ctx);
+};
 
-	const findIntersections = function () {
-		let cells = [];
+const findIntersections = function () {
+	let cells = [];
 
-		objects.forEach((obj, id) => {
-			cells[id] = [];
+	objects.forEach((obj, id) => {
+		cells[id] = [];
 
-			for (let i = 0; i < obj.widthCells; i++) {
-				for (let j = 0; j < obj.heightCells; j++) {
-					cells[id].push([obj.xCells + i, obj.yCells + j]);
-				}
-			}
-		});
-
-		const objSets = cells.map((obj) => {
-			return new Set(obj.map((coord) => coord.join(",")));
-		});
-
-		const intersections = new Set();
-
-		for (let i = 0; i < objSets.length; i++) {
-			for (let j = i + 1; j < objSets.length; j++) {
-				const setA = objSets[i];
-				const setB = objSets[j];
-
-				const isIntersecting = [...setA].some((x) => setB.has(x));
-
-				if (isIntersecting) {
-					intersections.add(i);
-					intersections.add(j);
-				}
+		for (let i = 0; i < obj.widthCells; i++) {
+			for (let j = 0; j < obj.heightCells; j++) {
+				cells[id].push([obj.xCells + i, obj.yCells + j]);
 			}
 		}
+	});
 
-		return [...intersections];
-	};
+	const objSets = cells.map((obj) => {
+		return new Set(obj.map((coord) => coord.join(",")));
+	});
 
-	const renderGrid = function (ctx) {
-		ctx.strokeStyle = "#1F2937";
-		ctx.setLineDash([options.cellSizePx / 4, options.cellSizePx / 4]);
-		ctx.lineDashOffset = options.cellSizePx / 8;
+	const intersections = new Set();
 
-		for (let i = 0; i <= options.widthCells; i++) {
-			ctx.beginPath();
-			ctx.moveTo(i * options.cellSizePx, 0);
-			ctx.lineTo(i * options.cellSizePx, options.heightPx);
-			ctx.stroke();
+	for (let i = 0; i < objSets.length; i++) {
+		for (let j = i + 1; j < objSets.length; j++) {
+			const setA = objSets[i];
+			const setB = objSets[j];
+
+			const isIntersecting = [...setA].some((x) => setB.has(x));
+
+			if (isIntersecting) {
+				intersections.add(i);
+				intersections.add(j);
+			}
 		}
+	}
 
-		for (let i = 0; i <= options.heightCells; i++) {
-			ctx.beginPath();
-			ctx.moveTo(0, i * options.cellSizePx);
-			ctx.lineTo(options.widthPx, i * options.cellSizePx);
-			ctx.stroke();
-		}
-	};
+	return [...intersections];
+};
 
-	const renderObjects = function (ctx) {
-		objects.forEach((obj, id) => {
-			if (id === selectedId) return;
+const renderGrid = function (ctx) {
+	ctx.strokeStyle = "#1F2937";
+	ctx.setLineDash([options.cellSizePx / 4, options.cellSizePx / 4]);
+	ctx.lineDashOffset = options.cellSizePx / 8;
 
-			obj.xPx = obj.xCells * options.cellSizePx;
-			obj.yPx = obj.yCells * options.cellSizePx;
-			obj.widthPx = obj.widthCells * options.cellSizePx;
-			obj.heightPx = obj.heightCells * options.cellSizePx;
+	for (let i = 0; i <= options.widthCells; i++) {
+		ctx.beginPath();
+		ctx.moveTo(i * options.cellSizePx, 0);
+		ctx.lineTo(i * options.cellSizePx, options.heightPx);
+		ctx.stroke();
+	}
 
-			ctx.beginPath();
-			ctx.rect(obj.xPx, obj.yPx, obj.widthPx, obj.heightPx);
-			ctx.fillStyle = findIntersections().find((el) => el === id) == undefined ? "rgba(0, 0, 0, 0)" : "rgba(255, 0, 0, 0.3)";
-			ctx.fill();
+	for (let i = 0; i <= options.heightCells; i++) {
+		ctx.beginPath();
+		ctx.moveTo(0, i * options.cellSizePx);
+		ctx.lineTo(options.widthPx, i * options.cellSizePx);
+		ctx.stroke();
+	}
+};
 
-			let objImage = new Image();
-			objImage.src = obj.currentSprite.name;
+const renderObjects = function (ctx) {
+	objects.forEach((obj, id) => {
+		if (id === selectedId) return;
 
-			objImage.onload = () => {
-				ctx.drawImage(
-					objImage,
-					obj.currentSprite.sprite.offsetX * options.cellSizePx + obj.xPx,
-					obj.currentSprite.sprite.offsetY * options.cellSizePx + obj.yPx,
-					obj.currentSprite.sprite.width * options.cellSizePx,
-					obj.currentSprite.sprite.height * options.cellSizePx
-				);
-			};
-		});
-
-		if (selectedId == undefined) return;
-
-		let selectedObj = objects[selectedId];
-
-		selectedObj.xPx = selectedObj.xCells * options.cellSizePx;
-		selectedObj.yPx = selectedObj.yCells * options.cellSizePx;
-		selectedObj.widthPx = selectedObj.widthCells * options.cellSizePx;
-		selectedObj.heightPx = selectedObj.heightCells * options.cellSizePx;
+		obj.xPx = obj.xCells * options.cellSizePx;
+		obj.yPx = obj.yCells * options.cellSizePx;
+		obj.widthPx = obj.widthCells * options.cellSizePx;
+		obj.heightPx = obj.heightCells * options.cellSizePx;
 
 		ctx.beginPath();
-		ctx.rect(selectedObj.xPx, selectedObj.yPx, selectedObj.widthPx, selectedObj.heightPx);
-		ctx.fillStyle = findIntersections().find((el) => el === selectedId) == undefined ? "rgba(0, 255, 0, 0.3)" : "rgba(255, 0, 0, 0.3)";
+		ctx.rect(obj.xPx, obj.yPx, obj.widthPx, obj.heightPx);
+		ctx.fillStyle = findIntersections().find((el) => el === id) == undefined ? "rgba(0, 0, 0, 0)" : "rgba(255, 0, 0, 0.3)";
 		ctx.fill();
 
-		let selectedObjImage = new Image();
-		selectedObjImage.src = selectedObj.currentSprite.name;
+		let objImage = new Image();
+		objImage.src = obj.currentSprite.name;
 
-		selectedObjImage.onload = () => {
+		objImage.onload = () => {
 			ctx.drawImage(
-				selectedObjImage,
-				selectedObj.currentSprite.sprite.offsetX * options.cellSizePx + selectedObj.xPx,
-				selectedObj.currentSprite.sprite.offsetY * options.cellSizePx + selectedObj.yPx,
-				selectedObj.currentSprite.sprite.width * options.cellSizePx,
-				selectedObj.currentSprite.sprite.height * options.cellSizePx
+				objImage,
+				obj.currentSprite.sprite.offsetX * options.cellSizePx + obj.xPx,
+				obj.currentSprite.sprite.offsetY * options.cellSizePx + obj.yPx,
+				obj.currentSprite.sprite.width * options.cellSizePx,
+				obj.currentSprite.sprite.height * options.cellSizePx
 			);
 		};
-	};
+	});
 
+	if (selectedId == undefined) return;
+
+	let selectedObj = objects[selectedId];
+	if (selectedObj == undefined) return;
+
+	selectedObj.xPx = selectedObj.xCells * options.cellSizePx;
+	selectedObj.yPx = selectedObj.yCells * options.cellSizePx;
+	selectedObj.widthPx = selectedObj.widthCells * options.cellSizePx;
+	selectedObj.heightPx = selectedObj.heightCells * options.cellSizePx;
+
+	ctx.beginPath();
+	ctx.rect(selectedObj.xPx, selectedObj.yPx, selectedObj.widthPx, selectedObj.heightPx);
+	ctx.fillStyle = findIntersections().find((el) => el === selectedId) == undefined ? "rgba(0, 255, 0, 0.3)" : "rgba(255, 0, 0, 0.3)";
+	ctx.fill();
+
+	let selectedObjImage = new Image();
+	selectedObjImage.src = selectedObj.currentSprite.name;
+
+	selectedObjImage.onload = () => {
+		ctx.drawImage(
+			selectedObjImage,
+			selectedObj.currentSprite.sprite.offsetX * options.cellSizePx + selectedObj.xPx,
+			selectedObj.currentSprite.sprite.offsetY * options.cellSizePx + selectedObj.yPx,
+			selectedObj.currentSprite.sprite.width * options.cellSizePx,
+			selectedObj.currentSprite.sprite.height * options.cellSizePx
+		);
+	};
+};
+
+export const Canvas = function ({ color, canvasRef }) {
 	const handleClick = function (e) {
 		e.preventDefault();
 
@@ -227,12 +244,6 @@ export const Canvas = function ({color}) {
 		render(ctx);
 	};
 
-	const render = (ctx) => {
-		ctx.clearRect(0, 0, options.widthPx, options.heightPx);
-		renderGrid(ctx);
-		renderObjects(ctx);
-	};
-
 	useEffect(() => {
 		const canvas = canvasRef.current;
 		if (!canvas) return;
@@ -240,11 +251,11 @@ export const Canvas = function ({color}) {
 		const ctx = canvas.getContext("2d");
 		if (!ctx) return;
 
-		render(ctx);
+		renderCanvas(ctx);
 
 		canvas.addEventListener("click", handleClick);
 		window.addEventListener("keydown", handleKeyDown);
 	}, []);
 
-	return <canvas style={{backgroundColor: color}} ref={canvasRef} width={options.widthPx} height={options.heightPx} className={styles.canvas} />;
+	return <canvas style={{ backgroundColor: color }} ref={canvasRef} width={options.widthPx} height={options.heightPx} className={styles.canvas} />;
 };
