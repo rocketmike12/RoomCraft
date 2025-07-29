@@ -1,8 +1,5 @@
 import { useState } from "react";
 import s from "./Question.module.scss";
-import cursorIcon from "../../img/icons/cursor.svg";
-import fingerIcon from "../../img/icons/cursor.svg";
-
 
 export const Question = () => {
 	const [isVisible, setIsVisible] = useState(false);
