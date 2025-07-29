@@ -29,7 +29,7 @@ export const Palette = ({ selectedColor, setSelectedColor }) => {
               key={color}
               onClick={() => {
                 setSelectedColor(color);
-                // setShowPalette(false);
+                setShowPalette(false);
               }}
               style={{
                 backgroundColor: color,
