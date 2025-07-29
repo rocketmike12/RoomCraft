@@ -5,6 +5,7 @@ import { Palette } from "../../components/Palette/Palette";
 import style from "./MainPage.module.scss";
 import { Canvas, addObject, renderCanvas } from "../../components/Canvas/Canvas.jsx";
 import { Catalog } from "../../components/Catalog/Catalog.jsx";
+import { Question } from "../../components/Question/Question.jsx";
 
 export const MainPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -38,6 +39,7 @@ export const MainPage = () => {
         <Catalog onAdd={handleAdd} />
         <Canvas color={selectedColor} canvasRef={canvasRef} />
         <Palette selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
+        <Question />
       </main>
     </>
   );
