@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import s from "./WelcomeModal.module.scss";
 import mishaFirst from "../../img/team/misha_first.jpg";
 import mishaSecond from "../../img/team/misha_second.jpg";
@@ -90,4 +90,3 @@ export const WelcomeModal = ({ onClose }) => {
     </div>
   );
 };
-
