@@ -7,6 +7,8 @@ import { Canvas, addObject, renderCanvas } from "../../components/Canvas/Canvas.
 import { Catalog } from "../../components/Catalog/Catalog.jsx";
 import { BurgerMenu } from "../../components/BurgerMenu/BurgerMenu.jsx";
 import { Button } from "../../components/Button/Button.jsx";
+import { Question } from "../../components/Question/Question.jsx";
+import { Container } from "../../components/Container/Container.jsx";
 
 export const MainPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -22,7 +24,7 @@ export const MainPage = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    renderCanvas(ctx);
+    renderCanvas(ctx, canvas);
   };
 
   useEffect(() => {
@@ -44,6 +46,7 @@ export const MainPage = () => {
           </BurgerMenu>
           <Canvas color={selectedColor} canvasRef={canvasRef} />
           <Palette selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
+          <Question />
         </div>
       </main>
     </>

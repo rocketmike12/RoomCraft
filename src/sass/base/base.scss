@@ -3,26 +3,32 @@
 *,
 ::after,
 ::before {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+    transition: 200ms;
 }
+
 body.no-scroll {
-  overflow: hidden;
+	overflow: hidden;
 }
+
 html {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
 }
+
 img {
-  display: block;
-  max-width: 100%;
-  height: auto;
+	display: block;
+	max-width: 100%;
+	height: auto;
 }
+
 body {
-  background-color: $mainBgColor;
-  font-family: "Press Start 2P", cursive;
-  margin: 0;
-  color: $mainTextColor;
-  overflow: hidden;
+	background-color: $mainBgColor;
+	font-family: "Press Start 2P", cursive;
+	margin: 0;
+	color: $mainTextColor;
+	overflow: hidden;
+    max-height: 100vh;
 }
 
 h1,
@@ -33,20 +39,42 @@ h5,
 h6,
 p,
 span {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
+
 ul,
 ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
 }
+
 a {
-  text-decoration: none;
-  cursor: pointer;
+	text-decoration: none;
+	cursor: pointer;
 }
+
 button {
-  font-family: "Press Start 2P", cursive;
-  cursor: pointer;
+	font-family: "Press Start 2P", cursive;
+	cursor: pointer;
+    outline: none;
+
+    &:hover {
+        filter: drop-shadow(0, 2, 2, 0, rgba(0, 0, 0, 25%)); 
+    }
+}
+
+input {
+	font-family: "Press Start 2P", cursive;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type="number"] {
+	-moz-appearance: textfield;
 }

@@ -2,11 +2,25 @@ import { useEffect, useRef } from "react";
 import furniture from "../../data/images_with_sprite.js";
 import styles from "./Canvas.module.scss";
 
-export function renderCanvas(ctx) {
+let options = JSON.parse(localStorage.getItem("options")) || {
+	widthCells: 8,
+	heightCells: 8
+};
+
+export function renderCanvas(ctx, canvas, color) {
+	options.widthPx = canvas.getBoundingClientRect().width;
+	options.heightPx = canvas.getBoundingClientRect().height;
+
+	options.cellSizePx = options.widthPx / options.widthCells;
+
+	canvas.setAttribute("width", options.widthPx);
+	canvas.setAttribute("height", options.heightPx);
+
 	ctx.clearRect(0, 0, options.widthPx, options.heightPx);
 	renderGrid(ctx);
-	renderObjects(ctx);
+	renderObjects(ctx, color);
 	localStorage.setItem("objects", JSON.stringify(objects));
+	localStorage.setItem("options", JSON.stringify(options));
 }
 
 export const addObject = function (id) {
@@ -14,12 +28,20 @@ export const addObject = function (id) {
 	selectedId = objects.length - 1;
 };
 
-const options = {
-	widthCells: 8,
-	heightCells: 8,
-	cellSizePx: 75,
-	widthPx: 600,
-	heightPx: 600
+const setCanvasSize = function (size, ctx, canvas) {
+	options.widthCells = size;
+	options.heightCells = size;
+
+	objects = [];
+
+	renderCanvas(ctx, canvas, true);
+};
+
+const clearObjects = function (ctx, canvas) {
+	objects = [];
+	localStorage.setItem("objects", JSON.stringify(objects));
+
+	renderCanvas(ctx, canvas, true);
 };
 
 let selectedId = 0;
@@ -49,14 +71,6 @@ class Furniture {
 }
 
 let objects = (JSON.parse(localStorage.getItem("objects")) || []).map((el) => Furniture.fromObj(el));
-
-const render = (ctx) => {
-	localStorage.setItem("objects", JSON.stringify(objects));
-
-	ctx.clearRect(0, 0, options.widthPx, options.heightPx);
-	renderGrid(ctx);
-	renderObjects(ctx);
-};
 
 const findIntersections = function () {
 	let cells = [];
@@ -114,7 +128,7 @@ const renderGrid = function (ctx) {
 	}
 };
 
-const renderObjects = function (ctx) {
+const renderObjects = function (ctx, color) {
 	objects.forEach((obj, id) => {
 		if (id === selectedId) return;
 
@@ -126,6 +140,7 @@ const renderObjects = function (ctx) {
 		ctx.beginPath();
 		ctx.rect(obj.xPx, obj.yPx, obj.widthPx, obj.heightPx);
 		ctx.fillStyle = findIntersections().find((el) => el === id) == undefined ? "rgba(0, 0, 0, 0)" : "rgba(255, 0, 0, 0.3)";
+		if (!color) ctx.fillStyle = "transparent";
 		ctx.fill();
 
 		let objImage = new Image();
@@ -155,6 +170,7 @@ const renderObjects = function (ctx) {
 	ctx.beginPath();
 	ctx.rect(selectedObj.xPx, selectedObj.yPx, selectedObj.widthPx, selectedObj.heightPx);
 	ctx.fillStyle = findIntersections().find((el) => el === selectedId) == undefined ? "rgba(0, 255, 0, 0.3)" : "rgba(255, 0, 0, 0.3)";
+	if (!color) ctx.fillStyle = "transparent";
 	ctx.fill();
 
 	let selectedObjImage = new Image();
@@ -172,6 +188,12 @@ const renderObjects = function (ctx) {
 };
 
 export const Canvas = function ({ color, canvasRef }) {
+	const sizeInputRef = useRef(null);
+	const sizeBtnRef = useRef(null);
+
+	const clearBtnRef = useRef(null);
+	const saveBtnRef = useRef(null);
+
 	const handleClick = function (e) {
 		e.preventDefault();
 
@@ -185,7 +207,7 @@ export const Canvas = function ({ color, canvasRef }) {
 				const ctx = canvas.getContext("2d");
 				if (!ctx) return;
 
-				render(ctx);
+				renderCanvas(ctx, canvas, true);
 			}
 		});
 	};
@@ -241,7 +263,7 @@ export const Canvas = function ({ color, canvasRef }) {
 		const ctx = canvas.getContext("2d");
 		if (!ctx) return;
 
-		render(ctx);
+		renderCanvas(ctx, canvas, true);
 	};
 
 	useEffect(() => {
@@ -251,11 +273,68 @@ export const Canvas = function ({ color, canvasRef }) {
 		const ctx = canvas.getContext("2d");
 		if (!ctx) return;
 
-		renderCanvas(ctx);
+		renderCanvas(ctx, canvas, true);
 
 		canvas.addEventListener("click", handleClick);
 		window.addEventListener("keydown", handleKeyDown);
+
+		const sizeBtn = sizeBtnRef.current;
+		const sizeInput = sizeInputRef.current;
+
+		sizeBtn.addEventListener("click", () => {
+			setCanvasSize(Number.parseInt(sizeInput.value), ctx, canvas);
+			setTimeout(() => {
+				sizeInput.value = "";
+			}, 1);
+		});
+
+		const clearBtn = clearBtnRef.current;
+		const saveBtn = saveBtnRef.current;
+
+		clearBtn.addEventListener("click", () => {
+			clearObjects(ctx, canvas);
+		});
+
+		saveBtn.addEventListener("click", () => {
+			renderCanvas(ctx, canvas, false);
+			setTimeout(() => {
+				const image = canvas.toDataURL("image/png");
+				const link = document.createElement("a");
+				link.href = image;
+				link.download = "room.png";
+				link.click();
+				setTimeout(() => {
+					renderCanvas(ctx, canvas, true);
+				}, 200);
+			}, 200);
+		});
 	}, []);
 
-	return <canvas style={{ backgroundColor: color }} ref={canvasRef} width={options.widthPx} height={options.heightPx} className={styles.canvas} />;
+	return (
+		<>
+			<div className={styles["canvas-wrap"]}>
+				<div className={styles["size__wrap"]}>
+					<input type="number" className={styles["size__input"]} ref={sizeInputRef} min="6" max="10" placeholder="8" />
+					<button className={styles["size__button"]} ref={sizeBtnRef}>
+						Застосувати
+					</button>
+				</div>
+
+				<canvas style={{ backgroundColor: color }} ref={canvasRef} className={styles.canvas} />
+
+				<ul className={styles["button-list"]}>
+					<li className={styles["button-list__item"]}>
+						<button className={`${styles["button-list__button"]} ${styles["button-list__button-clear"]}`} ref={clearBtnRef}>
+							Очистити
+						</button>
+					</li>
+					<li className={styles["button-list__item"]}>
+						<button className={`${styles["button-list__button"]} ${styles["button-list__button-save"]}`} ref={saveBtnRef}>
+							Зберегти
+						</button>
+					</li>
+				</ul>
+			</div>
+		</>
+	);
 };
