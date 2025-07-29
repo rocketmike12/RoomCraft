@@ -1,8 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import { throttle } from "lodash";
+
+import { debounce, throttle } from "lodash";
+
 import { Palette } from "../Palette/Palette.jsx";
 import { Question } from "../Question/Question.jsx";
+
 import furniture from "../../data/images_with_sprite.js";
+
+import DeleteIcon from "../../img/icons/recycle-bin.svg?react";
+import RotateIcon from "../../img/icons/rotate.svg?react";
+
 import styles from "./Canvas.module.scss";
 
 let options = JSON.parse(localStorage.getItem("options")) || {
@@ -216,6 +223,9 @@ export const Canvas = function ({ canvasRef }) {
 	const clearBtnRef = useRef(null);
 	const saveBtnRef = useRef(null);
 
+	const rotateBtnRef = useRef(null);
+	const deleteBtnRef = useRef(null);
+
 	const handleKeyDown = function (e) {
 		if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "z", "x"].includes(e.key)) return;
 
@@ -392,6 +402,31 @@ export const Canvas = function ({ canvasRef }) {
 				}, 200);
 			}, 200);
 		});
+
+		let rotateBtn = rotateBtnRef.current;
+		let deleteBtn = deleteBtnRef.current;
+
+		rotateBtn.addEventListener("click", throttle(() => {
+			objects[selectedId].sprites.unshift(objects[selectedId].sprites.pop());
+			objects[selectedId].update();
+
+			while (objects[selectedId].yCells + objects[selectedId].heightCells - 1 === options.heightCells) {
+				objects[selectedId].yCells -= 1;
+			}
+
+			while (objects[selectedId].xCells + objects[selectedId].widthCells - 1 === options.widthCells) {
+				objects[selectedId].xCells -= 1;
+			}
+
+			renderCanvas(ctx, canvas, true);
+			console.log("rotate")
+		}, 100));
+
+		deleteBtn.addEventListener("click", () => {
+			objects.splice(selectedId, 1);
+
+			renderCanvas(ctx, canvas, true);
+		});
 	}, []);
 
 	const [selectedColor, setSelectedColor] = useState(null);
@@ -406,6 +441,12 @@ export const Canvas = function ({ canvasRef }) {
 						</button>
 					</div>
 					<div className={styles["size__subwrap"]}>
+						<button className={styles["sub__button"]} ref={rotateBtnRef}>
+							<RotateIcon />
+						</button>
+						<button className={styles["sub__button"]} ref={deleteBtnRef}>
+							<DeleteIcon />
+						</button>
 						<Palette selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
 						<Question />
 					</div>
