@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { throttle } from "lodash";
 import { Palette } from "../Palette/Palette.jsx";
 import { Question } from "../Question/Question.jsx";
 import furniture from "../../data/images_with_sprite.js";
@@ -26,7 +27,7 @@ export function renderCanvas(ctx, canvas, color) {
 }
 
 export const addObject = function (id) {
-	objects.push(new Furniture(options.widthCells / 2, options.heightCells / 2, furniture[id].src));
+	objects.push(new Furniture(Math.floor(options.widthCells / 2), Math.floor(options.heightCells / 2), furniture[id].src));
 	selectedId = objects.length - 1;
 };
 
@@ -73,6 +74,16 @@ class Furniture {
 }
 
 let objects = (JSON.parse(localStorage.getItem("objects")) || []).map((el) => Furniture.fromObj(el));
+
+let imageCache = new Map();
+function getCachedImage(src) {
+	if (imageCache.has(src)) return imageCache.get(src);
+
+	const img = new Image();
+	img.src = src;
+	imageCache.set(src, img);
+	return img;
+}
 
 const findIntersections = function () {
 	let cells = [];
@@ -145,10 +156,9 @@ const renderObjects = function (ctx, color) {
 		if (!color) ctx.fillStyle = "transparent";
 		ctx.fill();
 
-		let objImage = new Image();
-		objImage.src = obj.currentSprite.name;
+		let objImage = getCachedImage(obj.currentSprite.name);
 
-		objImage.onload = () => {
+		if (objImage.complete) {
 			ctx.drawImage(
 				objImage,
 				obj.currentSprite.sprite.offsetX * options.cellSizePx + obj.xPx,
@@ -156,7 +166,17 @@ const renderObjects = function (ctx, color) {
 				obj.currentSprite.sprite.width * options.cellSizePx,
 				obj.currentSprite.sprite.height * options.cellSizePx
 			);
-		};
+		} else {
+			objImage.onload = () => {
+				ctx.drawImage(
+					objImage,
+					obj.currentSprite.sprite.offsetX * options.cellSizePx + obj.xPx,
+					obj.currentSprite.sprite.offsetY * options.cellSizePx + obj.yPx,
+					obj.currentSprite.sprite.width * options.cellSizePx,
+					obj.currentSprite.sprite.height * options.cellSizePx
+				);
+			};
+		}
 	});
 
 	if (selectedId == undefined) return;
@@ -196,24 +216,6 @@ export const Canvas = function ({ canvasRef }) {
 	const clearBtnRef = useRef(null);
 	const saveBtnRef = useRef(null);
 
-	const handleClick = function (e) {
-		e.preventDefault();
-
-		objects.forEach((obj, id) => {
-			if (e.offsetX >= obj.xPx && e.offsetX <= obj.xPx + obj.widthPx && e.offsetY >= obj.yPx && e.offsetY <= obj.yPx + obj.heightPx) {
-				selectedId = id;
-
-				const canvas = canvasRef.current;
-				if (!canvas) return;
-
-				const ctx = canvas.getContext("2d");
-				if (!ctx) return;
-
-				renderCanvas(ctx, canvas, true);
-			}
-		});
-	};
-
 	const handleKeyDown = function (e) {
 		if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "z", "x"].includes(e.key)) return;
 
@@ -241,7 +243,6 @@ export const Canvas = function ({ canvasRef }) {
 				objects[selectedId].yCells += 1;
 				break;
 			case "z":
-				// Rotate sprite array
 				objects[selectedId].sprites.unshift(objects[selectedId].sprites.pop());
 				objects[selectedId].update();
 
@@ -277,7 +278,88 @@ export const Canvas = function ({ canvasRef }) {
 
 		renderCanvas(ctx, canvas, true);
 
-		canvas.addEventListener("click", handleClick);
+		let isDragging = false;
+
+		function getCanvasOffsetPos(e) {
+			const rect = canvas.getBoundingClientRect();
+			let clientX, clientY;
+
+			if (e.touches && e.touches.length > 0) {
+				clientX = e.touches[0].clientX;
+				clientY = e.touches[0].clientY;
+			} else {
+				clientX = e.clientX;
+				clientY = e.clientY;
+			}
+
+			return {
+				x: clientX - rect.left,
+				y: clientY - rect.top
+			};
+		}
+
+		function handleStart(e) {
+			if (e.cancelable) e.preventDefault();
+
+			const pos = getCanvasOffsetPos(e);
+
+			for (let id = 0; id < objects.length; id++) {
+				const obj = objects[id];
+				if (pos.x >= obj.xPx && pos.x <= obj.xPx + obj.widthPx && pos.y >= obj.yPx && pos.y <= obj.yPx + obj.heightPx) {
+					selectedId = id;
+					isDragging = true;
+
+					const canvas = canvasRef.current;
+					if (!canvas) return;
+
+					const ctx = canvas.getContext("2d");
+					if (!ctx) return;
+
+					renderCanvas(ctx, canvas, true);
+					break;
+				}
+			}
+		}
+
+		function handleEnd() {
+			isDragging = false;
+		}
+
+		function handleMove(e) {
+			if (!isDragging || selectedId === null) return;
+
+			if (e.cancelable) e.preventDefault();
+
+			const pos = getCanvasOffsetPos(e);
+
+			const canvas = canvasRef.current;
+			if (!canvas) return;
+
+			const ctx = canvas.getContext("2d");
+			if (!ctx) return;
+
+			const selectedObj = objects[selectedId];
+
+			let newPosX = Math.floor(pos.x / options.cellSizePx);
+			let newPosY = Math.floor(pos.y / options.cellSizePx);
+
+			if (newPosX === selectedObj.xCells && newPosY === selectedObj.yCells) return;
+
+			selectedObj.xCells = newPosX;
+			selectedObj.yCells = newPosY;
+
+			renderCanvas(ctx, canvas, true);
+		}
+
+		canvas.addEventListener("mousedown", handleStart);
+		canvas.addEventListener("touchstart", handleStart, { passive: false });
+
+		window.addEventListener("mouseup", handleEnd);
+		window.addEventListener("touchend", handleEnd);
+
+		canvas.addEventListener("mousemove", throttle(handleMove, 100));
+		canvas.addEventListener("touchmove", throttle(handleMove, 100), { passive: false });
+
 		window.addEventListener("keydown", handleKeyDown);
 
 		const sizeBtn = sizeBtnRef.current;
@@ -324,7 +406,7 @@ export const Canvas = function ({ canvasRef }) {
 						</button>
 					</div>
 					<div className={styles["size__subwrap"]}>
-						<Palette selectedColor={selectedColor} setSelectedColor={setSelectedColor}/>
+						<Palette selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
 						<Question />
 					</div>
 				</div>
