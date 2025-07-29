@@ -1,1 +1,10 @@
+.main__wrap {
+	display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
 
+  @media screen and (min-width: 1200px) {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
