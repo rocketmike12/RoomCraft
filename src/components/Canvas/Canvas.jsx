@@ -1,4 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Palette } from "../Palette/Palette.jsx";
+import { Question } from "../Question/Question.jsx";
 import furniture from "../../data/images_with_sprite.js";
 import styles from "./Canvas.module.scss";
 
@@ -187,7 +189,7 @@ const renderObjects = function (ctx, color) {
 	};
 };
 
-export const Canvas = function ({ color, canvasRef }) {
+export const Canvas = function ({ canvasRef }) {
 	const sizeInputRef = useRef(null);
 	const sizeBtnRef = useRef(null);
 
@@ -310,17 +312,24 @@ export const Canvas = function ({ color, canvasRef }) {
 		});
 	}, []);
 
+	const [selectedColor, setSelectedColor] = useState(null);
 	return (
 		<>
 			<div className={styles["canvas-wrap"]}>
 				<div className={styles["size__wrap"]}>
-					<input type="number" className={styles["size__input"]} ref={sizeInputRef} min="6" max="10" placeholder="8" />
-					<button className={styles["size__button"]} ref={sizeBtnRef}>
-						Застосувати
-					</button>
+					<div>
+						<input type="number" className={styles["size__input"]} ref={sizeInputRef} min="6" max="10" placeholder="8" />
+						<button className={styles["size__button"]} ref={sizeBtnRef}>
+							Застосувати
+						</button>
+					</div>
+					<div className={styles["size__subwrap"]}>
+						<Palette selectedColor={selectedColor} setSelectedColor={setSelectedColor}/>
+						<Question />
+					</div>
 				</div>
 
-				<canvas style={{ backgroundColor: color }} ref={canvasRef} className={styles.canvas} />
+				<canvas style={{ backgroundColor: selectedColor }} ref={canvasRef} className={styles.canvas} />
 
 				<ul className={styles["button-list"]}>
 					<li className={styles["button-list__item"]}>
