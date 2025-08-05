@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-import { debounce, throttle } from "lodash";
+import { throttle } from "lodash";
 
 import { Palette } from "../Palette/Palette.jsx";
 import { Question } from "../Question/Question.jsx";
@@ -17,7 +17,9 @@ let options = JSON.parse(localStorage.getItem("options")) || {
 	heightCells: 8
 };
 
-export function renderCanvas(ctx, canvas, color) {
+let selectedColor = JSON.parse(localStorage.getItem("selectedColor")) || "#FFFFFF";
+
+export function renderCanvas(ctx, canvas, drawColor) {
 	options.widthPx = canvas.getBoundingClientRect().width;
 	options.heightPx = canvas.getBoundingClientRect().height;
 
@@ -26,9 +28,17 @@ export function renderCanvas(ctx, canvas, color) {
 	canvas.setAttribute("width", options.widthPx);
 	canvas.setAttribute("height", options.heightPx);
 
+	selectedColor = JSON.parse(localStorage.getItem("selectedColor")) || "#FFFFFF";
+
 	ctx.clearRect(0, 0, options.widthPx, options.heightPx);
+
+	ctx.rect(0, 0, options.widthPx, options.heightPx);
+	ctx.fillStyle = selectedColor;
+	ctx.fill();
+
 	renderGrid(ctx);
-	renderObjects(ctx, color);
+	renderObjects(ctx, drawColor);
+
 	localStorage.setItem("objects", JSON.stringify(objects));
 	localStorage.setItem("options", JSON.stringify(options));
 }
@@ -148,7 +158,7 @@ const renderGrid = function (ctx) {
 	}
 };
 
-const renderObjects = function (ctx, color) {
+const renderObjects = function (ctx, drawColor) {
 	objects.forEach((obj, id) => {
 		if (id === selectedId) return;
 
@@ -160,7 +170,7 @@ const renderObjects = function (ctx, color) {
 		ctx.beginPath();
 		ctx.rect(obj.xPx, obj.yPx, obj.widthPx, obj.heightPx);
 		ctx.fillStyle = findIntersections().find((el) => el === id) == undefined ? "rgba(0, 0, 0, 0)" : "rgba(255, 0, 0, 0.3)";
-		if (!color) ctx.fillStyle = "transparent";
+		if (!drawColor) ctx.fillStyle = "transparent";
 		ctx.fill();
 
 		let objImage = getCachedImage(obj.currentSprite.name);
@@ -199,7 +209,7 @@ const renderObjects = function (ctx, color) {
 	ctx.beginPath();
 	ctx.rect(selectedObj.xPx, selectedObj.yPx, selectedObj.widthPx, selectedObj.heightPx);
 	ctx.fillStyle = findIntersections().find((el) => el === selectedId) == undefined ? "rgba(0, 255, 0, 0.3)" : "rgba(255, 0, 0, 0.3)";
-	if (!color) ctx.fillStyle = "transparent";
+	if (!drawColor) ctx.fillStyle = "transparent";
 	ctx.fill();
 
 	let selectedObjImage = new Image();
@@ -406,21 +416,24 @@ export const Canvas = function ({ canvasRef }) {
 		let rotateBtn = rotateBtnRef.current;
 		let deleteBtn = deleteBtnRef.current;
 
-		rotateBtn.addEventListener("click", throttle(() => {
-			objects[selectedId].sprites.unshift(objects[selectedId].sprites.pop());
-			objects[selectedId].update();
+		rotateBtn.addEventListener(
+			"click",
+			throttle(() => {
+				objects[selectedId].sprites.unshift(objects[selectedId].sprites.pop());
+				objects[selectedId].update();
 
-			while (objects[selectedId].yCells + objects[selectedId].heightCells - 1 === options.heightCells) {
-				objects[selectedId].yCells -= 1;
-			}
+				while (objects[selectedId].yCells + objects[selectedId].heightCells - 1 === options.heightCells) {
+					objects[selectedId].yCells -= 1;
+				}
 
-			while (objects[selectedId].xCells + objects[selectedId].widthCells - 1 === options.widthCells) {
-				objects[selectedId].xCells -= 1;
-			}
+				while (objects[selectedId].xCells + objects[selectedId].widthCells - 1 === options.widthCells) {
+					objects[selectedId].xCells -= 1;
+				}
 
-			renderCanvas(ctx, canvas, true);
-			console.log("rotate")
-		}, 100));
+				renderCanvas(ctx, canvas, true);
+				console.log("rotate");
+			}, 100)
+		);
 
 		deleteBtn.addEventListener("click", () => {
 			objects.splice(selectedId, 1);
@@ -429,7 +442,18 @@ export const Canvas = function ({ canvasRef }) {
 		});
 	}, []);
 
-	const [selectedColor, setSelectedColor] = useState(null);
+	const setSelectedColor = function (color) {
+		const canvas = canvasRef.current;
+		if (!canvas) return;
+
+		const ctx = canvas.getContext("2d");
+		if (!ctx) return;
+
+		localStorage.setItem("selectedColor", JSON.stringify(color));
+
+		renderCanvas(ctx, canvas, true);
+	};
+
 	return (
 		<>
 			<div className={styles["canvas-wrap"]}>
